@@ -181,7 +181,7 @@
 #include "ofVectorMath.h"
 #include "ofColor.h"
 
-constexpr float ofColorScale(1.0f/255.0f);
+constexpr float ofColorScale = 1.0f/255.0f;
 #define IM_VEC2_CLASS_EXTRA_OF_9 \
     constexpr ImVec2(const ofVec2f& f) : x(f.x), y(f.y) {}   \
     operator ofVec2f() const { return ofVec2f(x, y); }       \
