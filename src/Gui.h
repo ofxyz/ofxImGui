@@ -145,6 +145,7 @@ namespace ofxImGui
         // Todo: remove these ? Adapt them ?
 		//void setSharedMode(bool _sharedMode=true);
         bool isInSharedMode() const;
+        bool isMaster() const;
 
 		void begin();
 		void end();
@@ -199,10 +200,5 @@ namespace ofxImGui
 
 		//static LinkedList<ofAppBaseWindow*, ofxImGuiContext> imguiContexts; // Window/MasterContext map
 		static std::unordered_map<ofAppBaseWindow*, ofxImGuiContext> imguiContexts; // Window/MasterContext map
-
-	public:
-		bool isMaster() {
-			return isContextOwned;
-		}
 	};
 }

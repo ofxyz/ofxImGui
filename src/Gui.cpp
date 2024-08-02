@@ -271,6 +271,10 @@ namespace ofxImGui
 		return context->isShared();
     }
 
+    bool Gui::isMaster() const {
+        return isContextOwned;
+    }
+
     //--------------------------------------------------------------
     bool Gui::setDefaultFont(int indexAtlasFont) {
         if(context==nullptr){
