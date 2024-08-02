@@ -378,7 +378,7 @@ class ofApp : public ofBaseApp {
                     auto io = ImGui::GetIO();
                     auto drawlist = ImGui::GetWindowDrawList();
                     if(drawlist){
-                        float availWidth = ImGui::GetContentRegionAvailWidth();
+                        float availWidth = ImGui::GetContentRegionAvail().x;
                         ImVec2 gamepadZonePos = ImGui::GetCursorScreenPos() + ImVec2(availWidth*.05f, 10);
                         ImVec2 gamepadZoneSize = { availWidth*.4f, 50 };
                         gamepadZoneSize.y = { gamepadZoneSize.x * .66f };
@@ -603,7 +603,7 @@ class ofApp : public ofBaseApp {
                     if(drawlist){
                         // Get coordinates
                         ImVec2 windowsZonePos = ImGui::GetCursorScreenPos();
-                        ImVec2 windowsZone = {ImGui::GetContentRegionAvailWidth(), 50};
+                        ImVec2 windowsZone = {ImGui::GetContentRegionAvail().x, 50};
                         ImVec2 ofScreenSize = ImVec2(ofGetScreenWidth(), ofGetScreenHeight());
                         windowsZone.y = windowsZone.x*(ofScreenSize.y/ofScreenSize.x);// Fit height proportionally to screen
                         ImVec2 drawScale = windowsZone / ofScreenSize;
