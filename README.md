@@ -11,7 +11,8 @@ _(Note: Internally, ImGui is not "ramming" on the CPU as most immediate-mode GUI
 - - - -
 
 ### Supported Platforms
-ofxImGui should run on the [latest openFrameworks release and it's OS/IDE requirements](https://openframeworks.cc/download/). These are typically:
+ofxImGui should run on the [latest openFrameworks release and it's OS/IDE requirements](https://openframeworks.cc/download/).  
+These are typically:
 
  - Mac OSX, Xcode
  - Windows 10, Visual Studio
@@ -40,8 +41,10 @@ ofxImGui should run on the [latest openFrameworks release and it's OS/IDE requir
 New ImGui versions bring changes and new API features, sometimes depreciations.  
 Versions are tagged in the git repo.
 
-| ofxImGui version  | ImGui version | Supported oF version |
-|------------------:|---------------|----------------------|
+| ofxImGui version  | ImGui version | Tested oF version |
+|------------------:|---------------|-------------------|
+| ofxImGui 1.91.0   | 1.91.0*       | 0.11 -> 0.12.0 |
+| ofxImGui 1.90.1   | 1.90.0*       | 0.11 -> 0.12.0 |
 | ofxImGui 1.89.2   | 1.89.2*       | 0.11 -> 0.11.2 |
 | ofxImGui 1.82     | 1.82*         | 0.11 -> 0.11.2 |
 | ofxImGui 1.79     | 1.79*         | 0.11.1 |
@@ -79,12 +82,13 @@ One tiny disadvantage of the Glfw backend is that multiwindow-together-with-view
 
 ### Install
 ````bash
-cd /path/to/of/addons && git clone https://github.com/Daandelange/ofxImGui.git
+cd /path/to/of/addons && git clone https://github.com/jvcleave/ofxImGui.git
 ````
 
 ### Optional
-Configure oF (tested with 0.11.0 and 0.11.2) to use GLFW 3.4 and ImGui will have an even more polished interface. See [Developpers.md](./Developpers.md#Improve-ofxImGui-s-backend-bindings).  
+If you are using oF 0.11.0 or before, or 0.11.2 (not 0.11.1), you can configure oF to use GLFW 3.4 and ImGui will have an even more polished interface. See [Developpers.md](./Developpers.md#Improve-ofxImGui-s-backend-bindings).  
 This step is also recommended for RPIs where GLFW is v3.2, which doesn't provide gamepad support.  
+oF 0.12.0 now bundles GLFW 3.3.8 which is OK with latest ImGui. 
 
 ### Compilation flags
 DearImGui needs to know your GL Context. ofxImGui tries to match your project's settings.  

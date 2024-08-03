@@ -1,6 +1,15 @@
 
 # Changelog
 
+_Note: This document is focused on ofxImGui. For detailed ImGui API changes and new features, please refer to the ImGui changelog._  
+_Tip: For compile-time depreciation hinting on your code, uncomment `IMGUI_DISABLE_OBSOLETE_FUNCTIONS` in `imconfig.h`. If you do this regurarly, it's quite easy to keep up with the occasional ImGui breaking API changes._  
+
+- - - -
+
+## ofxImGui 1.91.0
+New ImGui Features : multi-select, box-select, item flags, links.
+
+
 ## ofxImGui 1.82
 This is a major update for ofxImGui. Prior to this version, DearImGui was bound to openFrameworks using a "custom backend code".
 DearImGui has grown considerably over time, but some of the new (optional but nice) features require an advanced backend code, which is now provided by ImGui. For these features to be enabled, DearImGui now needs to be bound to the OS' windowing framework (GLFW). Luckily this is currently the same as most OpenFrameworks projects, and other popular windowing frameworks are also covered in case OpenFrameworks moves away from GLFW.
