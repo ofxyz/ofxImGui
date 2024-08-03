@@ -22,7 +22,7 @@ VERSION_1_90_0=ce0d0ac8 # 1.90.0
 VERSION_1_90_1=2dc85e6e # 1.90.1
 VERSION_1_90_9=3369cbd2 # 1.90.9
 VERSION_1_91_0=139e99ca # 1.91.0
-VERSION_SHA=$VERSION_1_90_9
+VERSION_SHA=$VERSION_1_91_0
 # ------------------
 
 echo "\nHello,"
@@ -43,10 +43,11 @@ fi;
 echo "Checking out latest commit"
 if [[ -d ./imgui_git ]]; then
 	cd ./imgui_git
-	git checkout -b docking
 	git fetch
+	#git checkout -b docking
 	# Alternative restoring all missing files AND reverings any change
 	git reset --hard $VERSION_SHA --
+
 	cd ../
 else
 	echo "Problem finding the imgui directory, exiting now."
@@ -98,8 +99,8 @@ cp ./imgui_git/misc/cpp/imgui_stdlib.cpp ./imgui/extras/imgui_stdlib.cpp
 cp ./imgui_git/misc/cpp/imgui_stdlib.h ./imgui/extras/imgui_stdlib.h
 
 # Remove git repo // cleanup
-echo "Cleaning up git repo..."
-rm -rf ./imgui_git
+#echo "Cleaning up git repo..."
+#rm -rf ./imgui_git
 
 # Apply patches
 echo "\nApplying patches..."
@@ -129,7 +130,7 @@ else
 	echo "This has only been tested on OSX."
 
 	# todo: On linux use sed instead of gsed ? Tested on OSX only.
-	
+
 	# Inform about changes
 	gsed -i '1s/^/\/\/ Warning!\n\/\/ This file has been modified for ofxImGui to support context switching.\n\/\/ This is not the original one. Changes are indicated.\n\n/' ./imgui/backends/imgui_impl_glfw.cpp
 	# Add include
