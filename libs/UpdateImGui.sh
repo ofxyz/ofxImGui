@@ -20,7 +20,9 @@ VERSION_1_89_8=f8704cd0 # 1.89.8
 VERSION_1_89_9=1d8e48c1 # 1.89.9
 VERSION_1_90_0=ce0d0ac8 # 1.90.0
 VERSION_1_90_1=2dc85e6e # 1.90.1
-VERSION_SHA=$VERSION_1_90_1
+VERSION_1_90_9=3369cbd2 # 1.90.9
+VERSION_1_91_0=139e99ca # 1.91.0
+VERSION_SHA=$VERSION_1_90_9
 # ------------------
 
 echo "\nHello,"
@@ -42,6 +44,7 @@ echo "Checking out latest commit"
 if [[ -d ./imgui_git ]]; then
 	cd ./imgui_git
 	git checkout -b docking
+	git fetch
 	# Alternative restoring all missing files AND reverings any change
 	git reset --hard $VERSION_SHA --
 	cd ../
@@ -106,6 +109,8 @@ if [ `uname -s` = "Darwin" ] ; then
 	if ! [ -x "$(command -v gsed)" ] ; then
 		echo "GSED is not installed, installing..."
 		brew install gnu-sed
+
+		# Todo: Brew might not be installed. Ask user to install gnu-sed and abort.
 	fi;
 fi;
 
