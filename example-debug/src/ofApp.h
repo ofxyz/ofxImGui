@@ -481,34 +481,49 @@ class ofApp : public ofBaseApp {
                         //ImGui::Button("test", gamepadZoneSize);
 
                         if( ImGui::CollapsingHeader("Dear ImGui Navigation Input") ){
-                            ImGui::TreePush("DummyNavinput");//Node("navinput");
+                            ImGui::TreePush("DummyNavinput");
                             ImGui::Columns(2);
 
-                            ImGui::SliderFloat("Up",    &ImGui::GetKeyData(ImGuiKey_GamepadFaceUp)->AnalogValue,    0.f, 1.f);
-                            ImGui::SliderFloat("Right", &ImGui::GetKeyData(ImGuiKey_GamepadFaceRight)->AnalogValue, 0.f, 1.f);
-                            ImGui::SliderFloat("Down",  &ImGui::GetKeyData(ImGuiKey_GamepadFaceDown)->AnalogValue, 0.f, 1.f);
-                            ImGui::SliderFloat("Left",  &ImGui::GetKeyData(ImGuiKey_GamepadFaceLeft)->AnalogValue, 0.f, 1.f);
-//                            ImGui::SliderFloat("LT", &io.NavInputs[ImGuiNavInput_TweakSlow], 0.f, 1.f);
-//                            ImGui::SliderFloat("RT", &io.NavInputs[ImGuiNavInput_TweakFast], 0.f, 1.f);
-//                            ImGui::SliderFloat("LB", &io.NavInputs[ImGuiNavInput_FocusPrev], 0.f, 1.f);
-//                            ImGui::SliderFloat("RB", &io.NavInputs[ImGuiNavInput_FocusNext], 0.f, 1.f);
+                            ImGui::SeparatorText("Left Stick");
+                            ImGui::SliderFloat("Up##LeftStick",    &ImGui::GetKeyData(ImGuiKey_GamepadLStickUp)->AnalogValue,    0.f, 1.f);
+                            ImGui::SliderFloat("Right##LeftStick", &ImGui::GetKeyData(ImGuiKey_GamepadLStickRight)->AnalogValue, 0.f, 1.f);
+                            ImGui::SliderFloat("Down##LeftStick",  &ImGui::GetKeyData(ImGuiKey_GamepadLStickDown)->AnalogValue, 0.f, 1.f);
+                            ImGui::SliderFloat("Left##LeftStick",  &ImGui::GetKeyData(ImGuiKey_GamepadLStickLeft)->AnalogValue, 0.f, 1.f);
+                            ImGui::Spacing();
+
+                            ImGui::SeparatorText("Right Stick");
+                            ImGui::SliderFloat("Up##RightStick",    &ImGui::GetKeyData(ImGuiKey_GamepadRStickUp)->AnalogValue,    0.f, 1.f);
+                            ImGui::SliderFloat("Right##RightStick", &ImGui::GetKeyData(ImGuiKey_GamepadRStickRight)->AnalogValue, 0.f, 1.f);
+                            ImGui::SliderFloat("Down##RightStick",  &ImGui::GetKeyData(ImGuiKey_GamepadRStickDown)->AnalogValue, 0.f, 1.f);
+                            ImGui::SliderFloat("Left###RightStick",  &ImGui::GetKeyData(ImGuiKey_GamepadRStickLeft)->AnalogValue, 0.f, 1.f);
+
+
+                            ImGui::SeparatorText("Analog Bumpers");
+                            ImGui::SliderFloat("L2",  &ImGui::GetKeyData(ImGuiKey_GamepadL2)->AnalogValue, 0.f, 1.f);
+                            ImGui::SliderFloat("R2",  &ImGui::GetKeyData(ImGuiKey_GamepadR2)->AnalogValue, 0.f, 1.f);
+                            ImGui::Spacing();
 
                             ImGui::NextColumn();
-
+                            ImGui::SeparatorText("Buttons");
 #define printBTN(NAME, IMGUI_NAVINPUT) { if(ImGui::IsKeyDown(IMGUI_NAVINPUT)){ ImGui::Text(NAME); } else { ImGui::TextDisabled(NAME); } }
-                            printBTN("Activate",    ImGuiKey_GamepadFaceDown);
-                            printBTN("Cancel",      ImGuiKey_GamepadFaceRight);
-                            printBTN("Menu",        ImGuiKey_GamepadFaceLeft);
-                            printBTN("Input",       ImGuiKey_GamepadFaceUp);
-                            printBTN("DpadLeft",    ImGuiKey_GamepadDpadLeft);
-                            printBTN("DpadRight",   ImGuiKey_GamepadDpadRight);
-                            printBTN("DpadUp",      ImGuiKey_GamepadDpadUp);
-                            printBTN("DpadDown",    ImGuiKey_GamepadDpadDown);
-                            printBTN("FocusPrev",   ImGuiKey_GamepadL1);
-                            printBTN("FocusNext",   ImGuiKey_GamepadR1);
-                            //printBTN("TweakSlow",   ImGuiNavInput_TweakSlow);
-                            //printBTN("TweakFast",   ImGuiNavInput_TweakFast);
+                            printBTN("GamepadStart",    ImGuiKey_GamepadStart);          // Menu (Xbox)      + (Switch)   Start/Options (PS)
+                            printBTN("GamepadBack",    ImGuiKey_GamepadBack);           // View (Xbox)      - (Switch)   Share (PS)
+                            printBTN("GamepadFaceLeft",    ImGuiKey_GamepadFaceLeft);       // X (Xbox)         Y (Switch)   Square (PS)        // Tap: Toggle Menu. Hold: Windowing mode (Focus/Move/Resize windows)
+                            printBTN("GamepadFaceRight",    ImGuiKey_GamepadFaceRight);      // B (Xbox)         A (Switch)   Circle (PS)        // Cancel / Close / Exit
+                            printBTN("GamepadFaceUp",    ImGuiKey_GamepadFaceUp);         // Y (Xbox)         X (Switch)   Triangle (PS)      // Text Input / On-screen Keyboard
+                            printBTN("GamepadFaceDown",    ImGuiKey_GamepadFaceDown);       // A (Xbox)         B (Switch)   Cross (PS)         // Activate / Open / Toggle / Tweak
+                            printBTN("GamepadDpadLeft",    ImGuiKey_GamepadDpadLeft);       // D-pad Left                                       // Move / Tweak / Resize Window (in Windowing mode)
+                            printBTN("GamepadDpadRight",    ImGuiKey_GamepadDpadRight);      // D-pad Right                                      // Move / Tweak / Resize Window (in Windowing mode)
+                            printBTN("GamepadDpadUp",    ImGuiKey_GamepadDpadUp);         // D-pad Up                                         // Move / Tweak / Resize Window (in Windowing mode)
+                            printBTN("GamepadDpadDown",    ImGuiKey_GamepadDpadDown);       // D-pad Down                                       // Move / Tweak / Resize Window (in Windowing mode)
+                            printBTN("ImGuiKey_GamepadL1",    ImGuiKey_GamepadL1);             // L Bumper (Xbox)  L (Switch)   L1 (PS)            // Tweak Slower / Focus Previous (in Windowing mode)
+                            printBTN("ImGuiKey_GamepadR1",    ImGuiKey_GamepadR1);             // R Bumper (Xbox)  R (Switch)   R1 (PS)            // Tweak Faster / Focus Next (in Windowing mode)
+                            printBTN("ImGuiKey_GamepadL2",    ImGuiKey_GamepadL2);             // L Trig. (Xbox)   ZL (Switch)  L2 (PS) [Analog]
+                            printBTN("ImGuiKey_GamepadR2",    ImGuiKey_GamepadR2);             // R Trig. (Xbox)   ZR (Switch)  R2 (PS) [Analog]
+                            printBTN("ImGuiKey_GamepadL3",    ImGuiKey_GamepadL3);             // L Stick (Xbox)   L3 (Switch)  L3 (PS)
+                            printBTN("ImGuiKey_GamepadR3",    ImGuiKey_GamepadR3);             // R Stick (Xbox)   R3 (Switch)  R3 (PS)
 #undef printBTN
+                            ImGui::Spacing();
                             ImGui::Columns(1);
                             ImGui::TreePop();
                         }
