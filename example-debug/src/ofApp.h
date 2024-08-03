@@ -5,6 +5,7 @@
 #include "ofxImGui.h"
 #include "imgui_windows_info.h"
 #include "ofConstants.h"
+#include <cstdio>
 
 #ifdef OFXIMGUI_DEBUG
 #pragma message "Compiling with debug flags. Below you'll find some build information."
@@ -79,6 +80,11 @@
 // Only on GLFW platforms (TARGET_GLFW_WINDOW is only set on rpi, default on other platforms)
 #if !defined( TARGET_RASPBERRY_PI ) || defined( TARGET_GLFW_WINDOW )
 	#define GLFW_WINDOWING_SYSTEM_IS_USED
+
+    // Needed to get the macro definitions since OF0.12
+#define GLFW_INCLUDE_NONE
+#include "GLFW/glfw3.h"
+
 	#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3 // Only GLFW > 3.3 has gamepad/joystick functions
 		#define GLFW_HAS_GAMEPAD_SUPPORT
 	#endif
@@ -344,7 +350,7 @@ class ofApp : public ofBaseApp {
 
             // ImGui environment
             if( ImGui::CollapsingHeader("DearImGui environment", ImGuiTreeNodeFlags_DefaultOpen) ){
-                ImGui::TreePush();
+                ImGui::TreePush("dummyIDEnv");
                 ImGui::Text("Dear ImGui version : %s", IMGUI_VERSION);
 
                 // ImGui Backend flags (from imgui demo)
@@ -373,7 +379,7 @@ class ofApp : public ofBaseApp {
 
                 // Gamepad support
                 if( ImGui::CollapsingHeader("Gamepad Input", ImGuiTreeNodeFlags_None) ){
-                    ImGui::TreePush();
+                    ImGui::TreePush("dummyIDGamepad");
 
                     auto io = ImGui::GetIO();
                     auto drawlist = ImGui::GetWindowDrawList();
@@ -385,8 +391,8 @@ class ofApp : public ofBaseApp {
 
                         // Bumpers (LB + RB)
                         ImVec2 triggersPos = gamepadZonePos+ImVec2(.5f,0.0f)*gamepadZoneSize;
-                        drawlist->AddTriangleFilled( triggersPos + ImVec2(-0.35f, 0.1f)*gamepadZoneSize, triggersPos + ImVec2(-0.33f, 0.f)*gamepadZoneSize, triggersPos + ImVec2(-0.09f, 0.02f)*gamepadZoneSize, ImGui::GetColorU32(io.NavInputs[ImGuiNavInput_FocusPrev]>0?ImGuiCol_ScrollbarGrabActive:ImGuiCol_FrameBg));
-                        drawlist->AddTriangleFilled( triggersPos + ImVec2(+0.35f, 0.1f)*gamepadZoneSize, triggersPos + ImVec2(+0.33f, 0.f)*gamepadZoneSize, triggersPos + ImVec2(+0.09f, 0.02f)*gamepadZoneSize, ImGui::GetColorU32(io.NavInputs[ImGuiNavInput_FocusNext]>0?ImGuiCol_ScrollbarGrabActive:ImGuiCol_FrameBg));
+                        drawlist->AddTriangleFilled( triggersPos + ImVec2(-0.35f, 0.1f)*gamepadZoneSize, triggersPos + ImVec2(-0.33f, 0.f)*gamepadZoneSize, triggersPos + ImVec2(-0.09f, 0.02f)*gamepadZoneSize, ImGui::GetColorU32(ImGui::IsKeyDown(ImGuiKey_GamepadL1)?ImGuiCol_ScrollbarGrabActive:ImGuiCol_FrameBg));
+                        drawlist->AddTriangleFilled( triggersPos + ImVec2(+0.35f, 0.1f)*gamepadZoneSize, triggersPos + ImVec2(+0.33f, 0.f)*gamepadZoneSize, triggersPos + ImVec2(+0.09f, 0.02f)*gamepadZoneSize, ImGui::GetColorU32(ImGui::IsKeyDown(ImGuiKey_GamepadR1)?ImGuiCol_ScrollbarGrabActive:ImGuiCol_FrameBg));
 
                         ImVec2 gamepadPoints[12] = {
                             gamepadZonePos+ImVec2(.5f,0.f)*gamepadZoneSize,
@@ -409,16 +415,16 @@ class ofApp : public ofBaseApp {
                         ImVec2 padPos = gamepadZonePos+ImVec2(.3f,0.5f)*gamepadZoneSize;
                         float padSize = gamepadZoneSize.x*.05f;
                         drawlist->AddCircleFilled(padPos, padSize, ImGui::GetColorU32(ImGuiCol_Text));
-                        if(io.NavInputs[ImGuiNavInput_DpadUp]>0)    drawlist->AddCircleFilled(padPos+padSize*.6f*ImVec2(0,-1.f), padSize, ImGui::GetColorU32(ImGuiCol_ScrollbarGrabActive));
-                        if(io.NavInputs[ImGuiNavInput_DpadDown]>0)  drawlist->AddCircleFilled(padPos+padSize*.6f*ImVec2(0,+1.f), padSize, ImGui::GetColorU32(ImGuiCol_ScrollbarGrabActive));
-                        if(io.NavInputs[ImGuiNavInput_DpadLeft]>0)  drawlist->AddCircleFilled(padPos+padSize*.6f*ImVec2(-1.f,0), padSize, ImGui::GetColorU32(ImGuiCol_ScrollbarGrabActive));
-                        if(io.NavInputs[ImGuiNavInput_DpadRight]>0) drawlist->AddCircleFilled(padPos+padSize*.6f*ImVec2(+1.f,0), padSize, ImGui::GetColorU32(ImGuiCol_ScrollbarGrabActive));
+                        if(ImGui::IsKeyDown(ImGuiKey_GamepadDpadUp))    drawlist->AddCircleFilled(padPos+padSize*.6f*ImVec2(0,-1.f), padSize, ImGui::GetColorU32(ImGuiCol_ScrollbarGrabActive));
+                        if(ImGui::IsKeyDown(ImGuiKey_GamepadDpadDown))  drawlist->AddCircleFilled(padPos+padSize*.6f*ImVec2(0,+1.f), padSize, ImGui::GetColorU32(ImGuiCol_ScrollbarGrabActive));
+                        if(ImGui::IsKeyDown(ImGuiKey_GamepadDpadLeft))  drawlist->AddCircleFilled(padPos+padSize*.6f*ImVec2(-1.f,0), padSize, ImGui::GetColorU32(ImGuiCol_ScrollbarGrabActive));
+                        if(ImGui::IsKeyDown(ImGuiKey_GamepadDpadRight)) drawlist->AddCircleFilled(padPos+padSize*.6f*ImVec2(+1.f,0), padSize, ImGui::GetColorU32(ImGuiCol_ScrollbarGrabActive));
 
                         // Left Joystick
                         ImVec2 leftStickPos = gamepadZonePos+ImVec2(.2f,0.3f)*gamepadZoneSize;
                         float leftStickSize = gamepadZoneSize.x*.05f;
                         drawlist->AddCircleFilled(leftStickPos, leftStickSize, ImGui::GetColorU32(ImGuiCol_Text));
-                        ImVec2 leftStickDir = ImVec2(io.NavInputs[ImGuiNavInput_LStickRight]-io.NavInputs[ImGuiNavInput_LStickLeft],io.NavInputs[ImGuiNavInput_LStickDown]-io.NavInputs[ImGuiNavInput_LStickUp]);
+                        ImVec2 leftStickDir = ImVec2(ImGui::IsKeyDown(ImGuiKey_GamepadLStickRight)-ImGui::IsKeyDown(ImGuiKey_GamepadLStickLeft), ImGui::IsKeyDown(ImGuiKey_GamepadLStickDown)-ImGui::IsKeyDown(ImGuiKey_GamepadLStickUp));
                         if( leftStickDir.x != 0 || leftStickDir.y != 0 )
                             drawlist->AddCircleFilled(leftStickPos+(leftStickSize*leftStickDir*.6f), leftStickSize, ImGui::GetColorU32(ImGuiCol_ScrollbarGrabActive));
 
@@ -426,10 +432,10 @@ class ofApp : public ofBaseApp {
                         ImVec2 buttonsPos = gamepadZonePos+ImVec2(.75f,0.35f)*gamepadZoneSize;
                         float buttonsSize = gamepadZoneSize.x*.04f;
                         //drawlist->AddCircleFilled(buttonsPos, buttonsSize, ImGui::GetColorU32(ImGuiCol_Text));
-                        drawlist->AddCircleFilled(buttonsPos+buttonsSize*2.f*ImVec2(0,+1.f), buttonsSize, ImGui::GetColorU32(io.NavInputs[ImGuiNavInput_Activate]>0?ImGuiCol_ScrollbarGrabActive:ImGuiCol_Text));
-                        drawlist->AddCircleFilled(buttonsPos+buttonsSize*2.f*ImVec2(-1.f,0), buttonsSize, ImGui::GetColorU32(io.NavInputs[ImGuiNavInput_Menu]>0?ImGuiCol_ScrollbarGrabActive:ImGuiCol_Text));
-                        drawlist->AddCircleFilled(buttonsPos+buttonsSize*2.f*ImVec2(0,-1.f), buttonsSize, ImGui::GetColorU32(io.NavInputs[ImGuiNavInput_Input]>0?ImGuiCol_ScrollbarGrabActive:ImGuiCol_Text));
-                        drawlist->AddCircleFilled(buttonsPos+buttonsSize*2.f*ImVec2(+1.f,0), buttonsSize, ImGui::GetColorU32(io.NavInputs[ImGuiNavInput_Cancel]>0?ImGuiCol_ScrollbarGrabActive:ImGuiCol_Text));
+                        drawlist->AddCircleFilled(buttonsPos+buttonsSize*2.f*ImVec2(0,+1.f), buttonsSize, ImGui::GetColorU32(ImGui::IsKeyDown(ImGuiKey_GamepadFaceDown)?ImGuiCol_ScrollbarGrabActive:ImGuiCol_Text));
+                        drawlist->AddCircleFilled(buttonsPos+buttonsSize*2.f*ImVec2(-1.f,0), buttonsSize, ImGui::GetColorU32(ImGui::IsKeyDown(ImGuiKey_GamepadFaceLeft)?ImGuiCol_ScrollbarGrabActive:ImGuiCol_Text));
+                        drawlist->AddCircleFilled(buttonsPos+buttonsSize*2.f*ImVec2(0,-1.f), buttonsSize, ImGui::GetColorU32(ImGui::IsKeyDown(ImGuiKey_GamepadFaceUp)?ImGuiCol_ScrollbarGrabActive:ImGuiCol_Text));
+                        drawlist->AddCircleFilled(buttonsPos+buttonsSize*2.f*ImVec2(+1.f,0), buttonsSize, ImGui::GetColorU32(ImGui::IsKeyDown(ImGuiKey_GamepadFaceRight)?ImGuiCol_ScrollbarGrabActive:ImGuiCol_Text));
 
                         // Vertical spacer
                         ImGui::Dummy(ImVec2(availWidth, 10));
@@ -475,13 +481,13 @@ class ofApp : public ofBaseApp {
                         //ImGui::Button("test", gamepadZoneSize);
 
                         if( ImGui::CollapsingHeader("Dear ImGui Navigation Input") ){
-                            ImGui::TreePush();//Node("navinput");
+                            ImGui::TreePush("DummyNavinput");//Node("navinput");
                             ImGui::Columns(2);
 
-                            ImGui::SliderFloat("Up", &io.NavInputs[ImGuiNavInput_LStickUp], 0.f, 1.f);
-                            ImGui::SliderFloat("Right", &io.NavInputs[ImGuiNavInput_LStickRight], 0.f, 1.f);
-                            ImGui::SliderFloat("Down", &io.NavInputs[ImGuiNavInput_LStickDown], 0.f, 1.f);
-                            ImGui::SliderFloat("Left", &io.NavInputs[ImGuiNavInput_LStickLeft], 0.f, 1.f);
+                            ImGui::SliderFloat("Up",    &ImGui::GetKeyData(ImGuiKey_GamepadFaceUp)->AnalogValue,    0.f, 1.f);
+                            ImGui::SliderFloat("Right", &ImGui::GetKeyData(ImGuiKey_GamepadFaceRight)->AnalogValue, 0.f, 1.f);
+                            ImGui::SliderFloat("Down",  &ImGui::GetKeyData(ImGuiKey_GamepadFaceDown)->AnalogValue, 0.f, 1.f);
+                            ImGui::SliderFloat("Left",  &ImGui::GetKeyData(ImGuiKey_GamepadFaceLeft)->AnalogValue, 0.f, 1.f);
 //                            ImGui::SliderFloat("LT", &io.NavInputs[ImGuiNavInput_TweakSlow], 0.f, 1.f);
 //                            ImGui::SliderFloat("RT", &io.NavInputs[ImGuiNavInput_TweakFast], 0.f, 1.f);
 //                            ImGui::SliderFloat("LB", &io.NavInputs[ImGuiNavInput_FocusPrev], 0.f, 1.f);
@@ -489,19 +495,19 @@ class ofApp : public ofBaseApp {
 
                             ImGui::NextColumn();
 
-#define printBTN(NAME, IMGUI_NAVINPUT) { if(io.NavInputs[IMGUI_NAVINPUT]>0){ ImGui::Text(NAME); } else { ImGui::TextDisabled(NAME); } }
-                            printBTN("Activate",    ImGuiNavInput_Activate);
-                            printBTN("Cancel",      ImGuiNavInput_Cancel);
-                            printBTN("Menu",        ImGuiNavInput_Menu);
-                            printBTN("Input",       ImGuiNavInput_Input);
-                            printBTN("DpadLeft",    ImGuiNavInput_DpadLeft);
-                            printBTN("DpadRight",   ImGuiNavInput_DpadRight);
-                            printBTN("DpadUp",      ImGuiNavInput_DpadUp);
-                            printBTN("DpadDown",    ImGuiNavInput_DpadDown);
-                            printBTN("FocusPrev",   ImGuiNavInput_FocusPrev);
-                            printBTN("FocusNext",   ImGuiNavInput_FocusNext);
-                            printBTN("TweakSlow",   ImGuiNavInput_TweakSlow);
-                            printBTN("TweakFast",   ImGuiNavInput_TweakFast);
+#define printBTN(NAME, IMGUI_NAVINPUT) { if(ImGui::IsKeyDown(IMGUI_NAVINPUT)){ ImGui::Text(NAME); } else { ImGui::TextDisabled(NAME); } }
+                            printBTN("Activate",    ImGuiKey_GamepadFaceDown);
+                            printBTN("Cancel",      ImGuiKey_GamepadFaceRight);
+                            printBTN("Menu",        ImGuiKey_GamepadFaceLeft);
+                            printBTN("Input",       ImGuiKey_GamepadFaceUp);
+                            printBTN("DpadLeft",    ImGuiKey_GamepadDpadLeft);
+                            printBTN("DpadRight",   ImGuiKey_GamepadDpadRight);
+                            printBTN("DpadUp",      ImGuiKey_GamepadDpadUp);
+                            printBTN("DpadDown",    ImGuiKey_GamepadDpadDown);
+                            printBTN("FocusPrev",   ImGuiKey_GamepadL1);
+                            printBTN("FocusNext",   ImGuiKey_GamepadR1);
+                            //printBTN("TweakSlow",   ImGuiNavInput_TweakSlow);
+                            //printBTN("TweakFast",   ImGuiNavInput_TweakFast);
 #undef printBTN
                             ImGui::Columns(1);
                             ImGui::TreePop();
@@ -593,7 +599,7 @@ class ofApp : public ofBaseApp {
                     auto io = ImGui::GetIO();
                     auto drawlist = ImGui::GetWindowDrawList();
 
-                    ImGui::TreePush();
+                    ImGui::TreePush("WindowDummy");
 
                     // Some info
                     ImGui::Text("%d active imgui windows (%d visible)", io.MetricsActiveWindows, io.MetricsRenderWindows);
@@ -613,14 +619,14 @@ class ofApp : public ofBaseApp {
 
                         // Main screen
                         static char mainwindowTitle[100];
-                        sprintf(mainwindowTitle, "Main display (%.0f x %.0f)", ofWindowSize.x, ofWindowSize.y);
+                        std::sprintf(mainwindowTitle, "Main display (%.0f x %.0f)", ofWindowSize.x, ofWindowSize.y);
                         drawlist->AddRect(windowsZonePos, windowsZonePos+windowsZone, IM_COL32(255,0,0,255));
                         drawlist->AddText(windowsZonePos+ImVec2(2,1), IM_COL32(255,0,0,255), mainwindowTitle);
                         //ofGetWindowRect();
 
                         // of Window
                         static char ofWindowTitle[100];
-                        sprintf(ofWindowTitle, "oF window (%.0f x %.0f)", ofWindowSize.x, ofWindowSize.y);
+                        std::sprintf(ofWindowTitle, "oF window (%.0f x %.0f)", ofWindowSize.x, ofWindowSize.y);
                         drawlist->AddRect(windowsZonePos+ImVec2(ofWindowPos.x, ofWindowPos.y)*drawScale, windowsZonePos+(ImVec2(ofWindowPos.x, ofWindowPos.y)+ofWindowSize)*drawScale, IM_COL32(0,255,0,255));
                         drawlist->AddText(windowsZonePos+ImVec2(ofWindowPos.x, ofWindowPos.y)*drawScale+ImVec2(2,1+ImGui::GetFontSize()), IM_COL32(0,255,0,255), ofWindowTitle );
 
