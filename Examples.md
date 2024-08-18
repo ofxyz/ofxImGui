@@ -3,10 +3,10 @@
 Here's an overview of the bundled examples.
 
 ## example-demo    
-Shows the imgui demo windows, very useful for discovering all the available widgets and ways of using the ImGui API.
+Shows the imgui demo window, very useful for **discovering all the available widgets** and their respective ImGui API code to reproduce.
 
 ## example-simple
-A very minimal example of how to use imgui within OpenFrameworks.
+A very **minimal example** of how to use imgui within OpenFrameworks.
 
 ## example-advanced
 Shows advanced use of imgui within oF, below are some covered topics :
@@ -20,13 +20,13 @@ Shows advanced use of imgui within oF, below are some covered topics :
 Load custom fonts and fontawesome into ofxImGui.
 
 ## example-helpers
-ofxImGui helper functions for interfacing with `ofParameter`.
+ofxImGui helper functions for interfacing with `ofParameter`. Useful for transitioning from ofxGui.
 
 ## example-ios  
 iOS specific with keyboard input helper.
 
 ## example-sharedcontext
-When several projects use ofxImGui (*an addon and your ofApp, for example*), you need to share the ofxImGui context.
+When several projects use ofxImGui (*an addon and your ofApp, for example*), you need to share the ofxImGui context. See also [ofxImGui integration within ofxAddons](./Developers.md#ofximgui-integration-within-ofxaddons)
 
 ## example-multiwindow
 How to use one ImGui instance in a multiwindow ofApp. Some bugs remain, implementation to be finished.
