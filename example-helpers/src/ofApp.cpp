@@ -3,6 +3,14 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+	fbo.allocate(200,200, GL_RGBA);
+	fbo.begin();
+	ofClear(0,0);
+	ofSetColor(10,200,10);
+	ofFill();
+	ofDrawCircle(100,100, 90);
+	fbo.end();
+
 	ofSetLogLevel(OF_LOG_NOTICE);
 	ofDisableArbTex();
 	ofSetBackgroundAuto(false);
@@ -264,6 +272,11 @@ bool ofApp::imGui()
 			}
 			ofxImGui::EndWindow(previewSettings);
 		}
+		if(ImGui::Begin("ofFboTexture")){
+			ImVec2 size = {fbo.getWidth(), fbo.getHeight()};
+			ImGui::Image(GetImTextureID(fbo), size);
+		}
+		ImGui::End();
 	}
 	this->gui.end();
 
