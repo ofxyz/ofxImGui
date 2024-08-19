@@ -344,7 +344,7 @@ namespace ofxImGui
             io.Fonts->Build();
 			if( context->engine.updateFontsTexture() ){
                 // Set default font when there's none yet, or as requested
-                if(_setAsDefaultFont || io.FontDefault == nullptr) setDefaultFont(font);
+                if(_setAsDefaultFont) setDefaultFont(font);
                 return font;
             }
             else return nullptr;
@@ -1025,6 +1025,10 @@ namespace ofxImGui
 						ImGui::Text("Loaded Fonts : %i", io.Fonts->Fonts.size());
 						for(auto& font : io.Fonts->Fonts){
 							ImGui::BulletText("%s", font->ConfigData->Name);
+                            if(font == io.FontDefault){
+                                ImGui::SameLine();
+                                ImGui::TextDisabled("Default");
+                            }
 						}
 						ImGui::TextWrapped("");
 
