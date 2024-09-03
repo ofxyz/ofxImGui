@@ -35,3 +35,5 @@ iOS specific with keyboard input helper.
 
 
 [![Build status](https://travis-ci.org/jvcleave/ofxImGui.svg?branch=master)](https://travis-ci.org/jvcleave/ofxImGui)
+
+[MIT Licence](libs/imgui/src/LICENSE.txt)
