@@ -874,8 +874,13 @@ void ofxImGui::AddImage(const ofBaseHasTexture& hasTexture, const ofVec2f& size)
 //--------------------------------------------------------------
 void ofxImGui::AddImage(const ofTexture& texture, const ofVec2f& size)
 {
-	ImTextureID textureID = GetImTextureID(texture);
-	ImGui::Image(textureID, size);
+    if (texture.getTextureData().textureTarget == GL_TEXTURE_2D){
+        ImTextureID textureID = GetImTextureID(texture);
+        ImGui::Image(textureID, size);
+    }
+    else {
+        ImGui::TextDisabled("Error: can't display GL_TEXTURE_RECTANGLE textures.\nPlease use GL_TEXTURE_2D.");
+    }
 }
 
 #if OF_VERSION_MINOR >= 10
@@ -889,8 +894,13 @@ void ofxImGui::AddImage(const ofBaseHasTexture& hasTexture, const glm::vec2& siz
 //--------------------------------------------------------------
 void ofxImGui::AddImage(const ofTexture& texture, const glm::vec2& size)
 {
-	ImTextureID textureID = GetImTextureID(texture);
-	ImGui::Image(textureID, size);
+    if (texture.getTextureData().textureTarget == GL_TEXTURE_2D){
+        ImTextureID textureID = GetImTextureID(texture);
+        ImGui::Image(textureID, size);
+    }
+    else {
+        ImGui::TextDisabled("Error: can't display GL_TEXTURE_RECTANGLE textures.\nPlease use GL_TEXTURE_2D.");
+    }
 }
 
 #endif

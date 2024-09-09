@@ -26,7 +26,7 @@ void ofApp::setup()
     //myCharRanges = normalCharRanges; // Uncomment to disable polish characters
 
     // Set font and keep a reference of it for using it later
-    customFont = gui.addFont("Roboto-Medium.ttf",16.f, nullptr, myCharRanges);
+    customFont = gui.addFont("Roboto-Medium.ttf",16.f, nullptr, myCharRanges, false);
 
     // You can also load fonts from memory
     // It will compile the font within the binary, so you don't have to ship the font file separately. Increases binary size.
@@ -95,6 +95,11 @@ void ofApp::draw(){
     ImGui::SameLine();
     ImGui::Button( ICON_FA_BELL " Ring it !");
     ImGui::PopFont();
+    ImGui::Dummy(ImVec2(0,10));
+
+    // Default font
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui::Text("Default font: %s", io.FontDefault==nullptr?"[None]":io.FontDefault->GetDebugName());
     ImGui::Dummy(ImVec2(0,10));
 
     // More

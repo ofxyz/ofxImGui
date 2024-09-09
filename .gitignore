@@ -109,6 +109,10 @@ icon.rc
 icon.rc
 *.vs/*
 
+#vsCode
+*/.vscode/*
+*.code-workspace
+
 ##-------------------------------
 
 # XCode
@@ -169,6 +173,7 @@ local.properties
 .DS_Store
 *.swp
 *~.nib
+*.entitlements
 # Thumbnails
 ._*
 
@@ -600,3 +605,10 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Misc (git)
+*.rej
+
+# Personal workflow ignores
+*.orig
+libs_disabled/*

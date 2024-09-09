@@ -1,15 +1,42 @@
 #include "ofApp.h"
+#include <cmath>
+#include <vector>
+#include <string>
+
+// Uncomment to switch between 2 modes
+//#define GLOBAL_ARB_TEX
 
 //--------------------------------------------------------------
 void ofApp::setup()
 {
 	ofSetLogLevel(OF_LOG_NOTICE);
-	ofDisableArbTex();
 	ofSetBackgroundAuto(false);
 	ofSetVerticalSync(true);
 	ofSetFrameRate(60);
 
 	this->stepper = 0.0f;
+
+    // FBO
+#ifdef GLOBAL_ARB_TEX
+    // Option 1 : Set all textures to GL_TEXTURE_2D in setup (recommended)
+    ofDisableArbTex();
+    fbo.allocate(200,200,GL_RGBA);
+#else
+    // Option 2 : Specify the texture target explicitly (when you can't set yourall ofApp textures to GL_TEXTURE_2D
+    ofFbo::Settings fboSettings ;
+    fboSettings.width = 200;
+    fboSettings.height = 200;
+    fboSettings.internalformat = GL_RGBA ;
+    fboSettings.textureTarget = GL_TEXTURE_2D;
+    fbo.allocate(fboSettings);
+#endif
+    fbo.checkStatus();
+    fbo.begin();
+    ofClear(0,0);
+    ofSetColor(10,200,10);
+    ofFill();
+    ofDrawCircle(100,100, 90);
+    fbo.end();
 
     // Gui
     gui.setup(nullptr, true, ImGuiConfigFlags_None, true);
@@ -165,9 +192,9 @@ bool ofApp::loadImage(const string & filePath)
 	texData.width = image.getWidth();
 	texData.height = image.getHeight();
 	texData.textureTarget = GL_TEXTURE_2D;
-	texData.bFlipTexture = true;
 	this->texture.allocate(texData);
 	this->texture.loadData(image.getPixels());
+    //texData.bFlipTexture = true;
 
 	this->imagePath = ofFilePath::makeRelative(ofToDataPath(""), filePath);
 	return true;
@@ -181,7 +208,6 @@ bool ofApp::imGui()
 	this->gui.begin();
 	{
         static bool bCollapse = false;
-        //if (ImGui::Begin("Helpers", &bshow))
         if (ofxImGui::BeginWindow("Helpers", mainSettings, ImGuiWindowFlags_NoCollapse, &bCollapse))
 		{
 			ImGui::Text("%.1f FPS (%.3f ms/frame)", ofGetFrameRate(), 1000.0f / ImGui::GetIO().Framerate);
@@ -264,6 +290,11 @@ bool ofApp::imGui()
 			}
 			ofxImGui::EndWindow(previewSettings);
 		}
+		if(ImGui::Begin("ofFboTexture")){
+            glm::vec2 size = {fbo.getWidth(), fbo.getHeight()};
+            ofxImGui::AddImage(fbo, size);
+		}
+		ImGui::End();
 	}
 	this->gui.end();
 

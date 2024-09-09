@@ -145,6 +145,7 @@ namespace ofxImGui
         // Todo: remove these ? Adapt them ?
 		//void setSharedMode(bool _sharedMode=true);
         bool isInSharedMode() const;
+        bool isMaster() const;
 
 		void begin();
 		void end();

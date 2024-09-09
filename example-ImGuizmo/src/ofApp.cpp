@@ -16,10 +16,23 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    // Draw Cam
 	cam_.begin();
 	node_.draw();
 	cam_.end();
+
+    // Start Gui
 	gui_.begin();
+
+    // Instructions
+    ImGui::SeparatorText("Instructions");
+    ImGui::TextWrapped("Press any of these keys to modify the guizmo.");
+    ImGui::BulletText("W - Translate");
+    ImGui::BulletText("E - Scale");
+    ImGui::BulletText("R - Rotate");
+    ImGui::BulletText("Space - Toggle World/Local");
+
+    // ImGuizmo
 	ImGuizmo::BeginFrame();
 	auto mat = node_.getGlobalTransformMatrix();
 	if(ImGuizmo::Manipulate(cam_, mat, op_, mode_)) {
@@ -34,6 +47,8 @@ void ofApp::draw(){
 		node_.setScale(scale);
 		node_.setOrientation(rotation);
 	}
+
+    // End gui
 	gui_.end();
 }
 

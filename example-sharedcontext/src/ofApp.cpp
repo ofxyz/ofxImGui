@@ -146,7 +146,7 @@ void ofApp::drawImGui()
 {
     ofAppGui.begin(); // <-- First call = Normal behaviour in sharedMode
 	{
-        ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_PassthruCentralNode);
+        ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 
 
         // Position the Gui only the firt time, after which it's reset to the last used layout.

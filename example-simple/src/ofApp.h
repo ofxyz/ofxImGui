@@ -26,9 +26,9 @@ class ofApp : public ofBaseApp{
             // Start drawing to ImGui (newFrame)
 			gui.begin();
 
-		if(bDrawOfxImGuiDebug){
-			gui.drawOfxImGuiDebugWindow();
-		}
+			if(bDrawOfxImGuiDebug){
+				gui.drawOfxImGuiDebugWindow();
+			}
 
             // Create a new window
             ImGui::Begin("ofxImGui example-simple");

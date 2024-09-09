@@ -68,4 +68,6 @@ protected:
 	ofParameter<bool> preview{ "Preview", false };
 	ofParameter<string> imagePath{ "Image Path", "texture.jpg" };
 	ofParameterGroup render{ "Render", fillMode, strokeMode, preview, imagePath };
+
+	ofFbo fbo;
 };

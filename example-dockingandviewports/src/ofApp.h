@@ -65,7 +65,7 @@ class ofApp : public ofBaseApp{
             //dockingFlags |= ImGuiDockNodeFlags_NoTabBar; // Uncomment to disable creating tabs in the main view
 
             // Define the ofWindow as a docking space
-            ImGuiID dockNodeID = ImGui::DockSpaceOverViewport(NULL, dockingFlags); // Also draws the docked windows
+            ImGuiID dockNodeID = ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport(), dockingFlags); // Also draws the docked windows
             ImGui::PopStyleColor(2);
 
             ImGuiDockNode* dockNode = ImGui::DockBuilderGetNode(dockNodeID);
